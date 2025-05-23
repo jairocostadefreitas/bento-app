@@ -10,11 +10,12 @@
   },
   "dependencies": {
     "@vercel/og": "^0.6.2",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.12.1",
     "next": "15.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "^20",

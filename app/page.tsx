@@ -5,36 +5,49 @@ import { type BentoItem, type Category } from './types';
 import { BentoGrid } from './components/bento-grid/BentoGrid';
 import { CategoryFilter } from './components/CategoryFilter';
 
-// Dados de exemplo - em produção, isso viria de uma API ou CMS
 const categories: Category[] = [
-  { id: 'web', name: 'Web Development' },
-  { id: 'mobile', name: 'Mobile Apps' },
-  { id: 'design', name: 'Design' },
+  { id: 'fitness', name: 'Fitness' },
+  { id: 'saude', name: 'Saúde' },
+  { id: 'bem-estar', name: 'Bem-estar' },
 ];
 
 const items: BentoItem[] = [
   {
     id: '1',
-    title: 'Next.js Dashboard',
-    description: 'Dashboard moderno construído com Next.js e TailwindCSS',
-    categoryId: 'web',
+    title: 'Treino Funcional',
+    description: 'Descubra o poder do treino funcional para um corpo mais forte e saudável. Exercícios que simulam movimentos do dia a dia.',
+    categoryId: 'fitness',
     featured: true,
-    image: '/images/dashboard.jpg',
+    image: '/imagens/workout-6972949_1280.png',
   },
   {
     id: '2',
-    title: 'App Mobile React Native',
-    description: 'Aplicativo móvel multiplataforma com React Native',
-    categoryId: 'mobile',
-    image: '/images/mobile-app.jpg',
+    title: 'Equilíbrio e Saúde',
+    description: 'Mantenha seu peso ideal e uma vida equilibrada. Dicas e orientações para uma vida mais saudável.',
+    categoryId: 'saude',
+    featured: true,
+    image: '/imagens/scale-149033_1280.png',
   },
   {
     id: '3',
-    title: 'Design System',
-    description: 'Sistema de design unificado para produtos digitais',
-    categoryId: 'design',
-    featured: true,
-    image: '/images/design-system.jpg',
+    title: 'Bem-estar Feminino',
+    description: 'Cuide do seu corpo e mente com nossas dicas especiais para o bem-estar feminino.',
+    categoryId: 'bem-estar',
+    image: '/imagens/women-5635784_1280.png',
+  },
+  {
+    id: '4',
+    title: 'Saúde Integral',
+    description: 'A importância de manter um corpo saudável através de exercícios e boa alimentação.',
+    categoryId: 'saude',
+    image: '/imagens/body-8782319_1280.png',
+  },
+  {
+    id: '5',
+    title: 'Fitness Feminino',
+    description: 'Programas de treino especialmente desenvolvidos para mulheres que buscam uma vida mais ativa.',
+    categoryId: 'fitness',
+    image: '/imagens/womenn-5635784_1280.png',
   },
 ];
 
@@ -45,7 +58,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-b from-background to-background/95">
       <div className="mx-auto max-w-7xl px-4 py-8">
         <h1 className="mb-8 text-4xl font-bold text-foreground">
-          Projetos em Destaque
+          Saúde e Bem-estar
         </h1>
         
         <CategoryFilter

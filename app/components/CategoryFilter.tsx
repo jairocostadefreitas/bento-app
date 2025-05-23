@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { type Category } from '@/app/types';
 
 interface CategoryFilterProps {
@@ -8,36 +9,62 @@ interface CategoryFilterProps {
   onCategoryChange: (categoryId: string) => void;
 }
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
+
 export function CategoryFilter({
   categories,
   selectedCategory,
   onCategoryChange,
 }: CategoryFilterProps) {
   return (
-    <div className="flex flex-wrap gap-2 p-4">
-      <button
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="flex flex-wrap gap-3 p-4 mb-4"
+    >
+      <motion.button
+        variants={item}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         onClick={() => onCategoryChange('')}
-        className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors
+        className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all
           ${!selectedCategory 
-            ? 'bg-foreground text-background' 
-            : 'bg-background/50 text-foreground hover:bg-background/80'
+            ? 'bg-foreground text-background shadow-lg' 
+            : 'bg-background/50 text-foreground hover:bg-background/80 hover:shadow'
           }`}
       >
         Todos
-      </button>
+      </motion.button>
       {categories.map((category) => (
-        <button
+        <motion.button
           key={category.id}
+          variants={item}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => onCategoryChange(category.id)}
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors
+          className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all
             ${selectedCategory === category.id
-              ? 'bg-foreground text-background'
-              : 'bg-background/50 text-foreground hover:bg-background/80'
+              ? 'bg-foreground text-background shadow-lg'
+              : 'bg-background/50 text-foreground hover:bg-background/80 hover:shadow'
             }`}
         >
           {category.name}
-        </button>
+        </motion.button>
       ))}
-    </div>
+    </motion.div>
   );
 } 
