@@ -2,87 +2,292 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { type BentoItem as BentoItemType } from '@/app/types';
+import { 
+  getImageSizeClasses, 
+  getTitleSizeClasses, 
+  getDescriptionSizeClasses,
+  themes 
+} from '@/app/types';
 
 interface BentoItemProps {
   item: BentoItemType;
   className?: string;
-  index?: number;
+  enableHover?: boolean;
+  theme?: "light" | "dark" | "auto";
 }
 
-export function BentoItem({ item, className = '', index = 0 }: BentoItemProps) {
-  // Layout horizontal apenas em desktop para cards específicos
-  const isHorizontalLayout = (index === 0 || index === 1);
+export function BentoItem({ 
+  item, 
+  className = '', 
+  enableHover = true,
+  theme = 'light'
+}: BentoItemProps) {
+  // Determinar o tema atual
+  const currentTheme = theme === 'auto' 
+    ? (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? themes.dark : themes.light)
+    : themes[theme as keyof typeof themes] || themes.light;
+
+  // Classes de posicionamento de imagem
+  const getImagePositionClasses = () => {
+    const position = item.position || 'top';
+    const imageSize = item.imageSize || 'medium';
+    
+    switch (position) {
+      case 'left':
+        return {
+          container: 'flex-row',
+          imageWrapper: `relative ${getImageSizeClasses(imageSize, position)} flex-shrink-0`,
+          contentWrapper: 'flex-1 min-w-0'
+        };
+      case 'right':
+        return {
+          container: 'flex-row-reverse',
+          imageWrapper: `relative ${getImageSizeClasses(imageSize, position)} flex-shrink-0`,
+          contentWrapper: 'flex-1 min-w-0'
+        };
+      case 'bottom':
+        return {
+          container: 'flex-col-reverse',
+          imageWrapper: `relative ${getImageSizeClasses(imageSize, position)} flex-shrink-0`,
+          contentWrapper: 'flex-1 min-w-0'
+        };
+      case 'full':
+        return {
+          container: 'relative',
+          imageWrapper: 'absolute inset-0',
+          contentWrapper: 'relative z-10 flex flex-col justify-end h-full'
+        };
+      case 'background':
+        return {
+          container: 'relative',
+          imageWrapper: 'absolute inset-0',
+          contentWrapper: 'relative z-10 flex flex-col justify-center items-center h-full text-center'
+        };
+      default: // top
+        return {
+          container: 'flex-col',
+          imageWrapper: `relative ${getImageSizeClasses(imageSize, position)} flex-shrink-0`,
+          contentWrapper: 'flex-1 min-w-0'
+        };
+    }
+  };
+
+  const positionClasses = getImagePositionClasses();
+
+  // Classes de hover effect
+  const getHoverEffectClasses = () => {
+    if (!enableHover) return '';
+    
+    switch (item.hoverEffect) {
+      case 'lift':
+        return 'hover:shadow-2xl hover:-translate-y-2';
+      case 'glow':
+        return 'hover:shadow-2xl hover:shadow-blue-500/25';
+      case 'rotate':
+        return 'hover:rotate-1';
+      case 'none':
+        return '';
+      default: // scale
+        return 'hover:scale-[1.02]';
+    }
+  };
+
+  // Classes de sombra
+  const getShadowClasses = () => {
+    const shadowMap = {
+      none: '',
+      sm: 'shadow-sm',
+      md: 'shadow-md',
+      lg: 'shadow-lg',
+      xl: 'shadow-xl',
+      '2xl': 'shadow-2xl',
+    };
+    return shadowMap[item.shadow || 'lg'];
+  };
+
+  // Classes de border radius
+  const getRoundedClasses = () => {
+    const roundedMap = {
+      none: '',
+      sm: 'rounded-sm',
+      md: 'rounded-md',
+      lg: 'rounded-lg',
+      xl: 'rounded-xl',
+      '2xl': 'rounded-2xl',
+      full: 'rounded-full',
+    };
+    return roundedMap[item.rounded || 'xl'];
+  };
+
+  // Classes de botão
+  const getButtonClasses = () => {
+    const baseClasses = 'inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg';
+    
+    switch (item.buttonVariant) {
+      case 'outline':
+        return `${baseClasses} border-2 border-current bg-transparent hover:bg-current hover:text-white`;
+      case 'secondary':
+        return `${baseClasses} bg-gray-100 text-gray-900 hover:bg-gray-200`;
+      case 'ghost':
+        return `${baseClasses} bg-transparent hover:bg-white/10`;
+      case 'gradient':
+        return `${baseClasses} bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700`;
+      default:
+        return `${baseClasses} bg-white/10 text-white backdrop-blur-sm hover:bg-white/20`;
+    }
+  };
 
   const content = (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
-      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.3 }}
+      whileHover={enableHover ? { scale: item.hoverEffect === 'scale' ? 1.02 : 1 } : {}}
       style={{
-        backgroundColor: item.backgroundColor || '#ffffff',
+        backgroundColor: item.backgroundColor || currentTheme.background,
+        color: item.textColor || currentTheme.text,
+        background: item.gradient || item.backgroundColor || currentTheme.background,
+        borderColor: item.borderColor,
+        borderWidth: item.borderWidth || 0,
       }}
-      className={`group relative flex h-full overflow-hidden rounded-xl shadow-lg transition-all ${className}`}
+      className={`
+        group relative flex h-full overflow-hidden transition-all duration-300
+        ${getRoundedClasses()}
+        ${getShadowClasses()}
+        ${getHoverEffectClasses()}
+        ${className}
+      `}
     >
       {item.isSubscription ? (
-        // Card de inscrição
-        <div className="flex h-full flex-col md:flex-row items-center justify-between p-6 md:p-8 text-white">
-          <div className="text-center md:text-left mb-4 md:mb-0 md:mr-8">
-            <h3 className="text-2xl md:text-3xl font-bold">{item.title}</h3>
+        // Card de inscrição melhorado
+        <div className="flex h-full flex-col md:flex-row items-center justify-between p-6 md:p-8">
+          <div className="text-center md:text-left mb-4 md:mb-0 md:mr-8 flex-1">
+            {item.icon && (
+              <div className="mb-4">
+                <span className="text-4xl">{item.icon}</span>
+              </div>
+            )}
+            <h3 className={`font-bold ${getTitleSizeClasses(item.titleSize || '2xl')}`}>
+              {item.title}
+            </h3>
             {item.description && (
-              <p className="mt-3 text-base md:text-lg text-white/90 max-w-xl">{item.description}</p>
+              <p className={`mt-3 opacity-90 max-w-xl ${getDescriptionSizeClasses(item.descriptionSize || 'base')}`}>
+                {item.description}
+              </p>
+            )}
+            {item.badge && (
+              <span 
+                className="inline-block mt-3 px-3 py-1 text-xs font-medium rounded-full"
+                style={{ backgroundColor: item.badgeColor || 'rgba(255,255,255,0.2)' }}
+              >
+                {item.badge}
+              </span>
             )}
           </div>
           {item.buttonText && (
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full md:w-auto whitespace-nowrap rounded-lg border border-white/20 bg-white/10 px-8 py-3 text-base font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              className={`w-full md:w-auto whitespace-nowrap ${getButtonClasses()}`}
+              aria-label={`${item.buttonText} - ${item.title}`}
             >
               {item.buttonText}
             </motion.button>
           )}
         </div>
       ) : (
-        // Cards normais com layout flexível
-        <div className={`flex h-full w-full flex-col ${isHorizontalLayout ? 'md:flex-row' : ''}`}>
+        // Cards normais com posicionamento flexível de imagem
+        <div className={`flex h-full w-full ${positionClasses.container}`}>
           {/* Container da imagem */}
           {item.image && (
-            <div className={`relative h-48 ${isHorizontalLayout ? 'md:h-auto md:w-1/2' : 'md:h-56'}`}>
+            <div className={positionClasses.imageWrapper}>
               <Image
                 src={item.image}
                 alt={item.title}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes={isHorizontalLayout 
-                  ? "(max-width: 768px) 100vw, 33vw"
-                  : "(max-width: 768px) 100vw, 50vw"
-                }
+                sizes="(max-width: 768px) 100vw, 50vw"
                 priority={item.featured}
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-transparent md:bg-gradient-to-r" />
+              {/* Overlay */}
+              {(item.overlay !== false) && (
+                <div 
+                  className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-transparent"
+                  style={{ opacity: item.overlayOpacity || 0.6 }}
+                />
+              )}
             </div>
           )}
           
           {/* Container do conteúdo */}
-          <div className={`relative flex flex-col justify-between flex-1 p-4 ${
-            isHorizontalLayout ? 'md:w-1/2 md:p-6' : ''
-          }`}>
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold leading-tight mb-2">
+          <div className={`
+            relative flex flex-col justify-between p-4 md:p-6
+            ${positionClasses.contentWrapper}
+            ${item.position === 'full' || item.position === 'background' ? 'text-white' : ''}
+          `}>
+            <div className="flex-1">
+              {/* Metadados */}
+              {(item.author || item.date || item.readTime) && (
+                <div className="flex items-center gap-2 mb-2 text-xs opacity-75">
+                  {item.author && <span>{item.author}</span>}
+                  {item.date && <span>•</span>}
+                  {item.date && <span>{new Date(item.date).toLocaleDateString('pt-BR')}</span>}
+                  {item.readTime && <span>•</span>}
+                  {item.readTime && <span>{item.readTime}</span>}
+                </div>
+              )}
+
+              {/* Ícone */}
+              {item.icon && (
+                <div className="mb-2">
+                  <span className="text-2xl">{item.icon}</span>
+                </div>
+              )}
+
+              {/* Título */}
+              <h3 className={`font-bold leading-tight mb-2 ${getTitleSizeClasses(item.titleSize || 'lg')}`}>
                 {item.title}
               </h3>
+
+              {/* Descrição */}
               {item.description && (
-                <p className="text-sm md:text-base opacity-90">
+                <p className={`opacity-90 ${getDescriptionSizeClasses(item.descriptionSize || 'base')}`}>
                   {item.description}
                 </p>
               )}
+
+              {/* Tags */}
+              {item.tags && item.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-3">
+                  {item.tags.slice(0, 3).map((tag, tagIndex) => (
+                    <span 
+                      key={tagIndex}
+                      className="px-2 py-1 text-xs bg-white/20 rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Badge */}
+              {item.badge && (
+                <span 
+                  className="inline-block mt-3 px-3 py-1 text-xs font-medium rounded-full"
+                  style={{ backgroundColor: item.badgeColor || 'rgba(255,255,255,0.2)' }}
+                >
+                  {item.badge}
+                </span>
+              )}
             </div>
+
+            {/* Botão */}
             {item.buttonText && (
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="mt-4 self-start rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm hover:bg-white/20"
+                className={`mt-4 self-start ${getButtonClasses()}`}
+                aria-label={`${item.buttonText} - ${item.title}`}
               >
                 {item.buttonText}
               </motion.button>
@@ -95,7 +300,11 @@ export function BentoItem({ item, className = '', index = 0 }: BentoItemProps) {
 
   if (item.link) {
     return (
-      <Link href={item.link} className="block h-full">
+      <Link 
+        href={item.link} 
+        className="block h-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-xl"
+        aria-label={`Ir para ${item.title}`}
+      >
         {content}
       </Link>
     );
