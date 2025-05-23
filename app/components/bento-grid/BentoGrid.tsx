@@ -1,46 +1,81 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { type BentoGridProps } from '@/app/types';
-import { BentoItem } from './BentoItem';
+import { BentoItem as BentoItemComponent } from './BentoItem';
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
-
-export function BentoGrid({ items, selectedCategory }: BentoGridProps) {
-  const filteredItems = selectedCategory
-    ? items.filter((item) => item.categoryId === selectedCategory)
-    : items;
+export function BentoGrid({ 
+  items, 
+  selectedCategory,
+}: BentoGridProps) {
+  // Encontrar o card de inscrição
+  const subscriptionCard = items.find(item => item.isSubscription);
+  
+  // Filtrar os outros cards baseado na categoria
+  const contentCards = items
+    .filter(item => !item.isSubscription)
+    .filter(item => !selectedCategory || item.categoryId === selectedCategory);
 
   return (
     <motion.div
       layout
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="grid grid-cols-2 md:grid-cols-12 gap-4 md:gap-6"
     >
       <AnimatePresence mode="popLayout">
-        {filteredItems.map((item) => (
+        {/* Cards de conteúdo */}
+        {contentCards.map((item, index) => {
+          let spanClass = '';
+          if (index === 0) {
+            spanClass = 'md:col-span-8 md:row-span-2'; // Primeiro card maior
+          } else if (index === 1) {
+            spanClass = 'md:col-span-4 md:row-span-2'; // Segundo card vertical
+          } else {
+            spanClass = 'md:col-span-4 md:row-span-1'; // Outros cards menores
+          }
+
+          return (
+            <motion.div
+              key={item.id}
+              layout
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ 
+                duration: 0.2,
+                ease: "easeOut"
+              }}
+              className={`${spanClass} h-full min-h-[200px] md:min-h-[250px]`}
+            >
+              <BentoItemComponent
+                item={item}
+                index={index}
+                className="h-full"
+              />
+            </motion.div>
+          );
+        })}
+
+        {/* Card de inscrição */}
+        {subscriptionCard && (
           <motion.div
-            key={item.id}
+            key="subscription"
             layout
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ 
+              duration: 0.2,
+              ease: "easeOut"
+            }}
+            className={`col-span-2 md:col-span-${contentCards.length >= 3 ? '4' : '12'} h-full min-h-[120px]`}
           >
-            <BentoItem
-              item={item}
-              className={item.featured ? 'md:col-span-2 md:row-span-2' : ''}
+            <BentoItemComponent
+              item={subscriptionCard}
+              className="h-full shadow-xl"
             />
           </motion.div>
-        ))}
+        )}
       </AnimatePresence>
     </motion.div>
   );

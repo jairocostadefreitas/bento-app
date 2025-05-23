@@ -34,18 +34,18 @@ export function CategoryFilter({
       variants={container}
       initial="hidden"
       animate="show"
-      className="flex flex-wrap gap-3 p-4 mb-4"
+      className="mb-6 flex flex-wrap gap-2"
     >
       <motion.button
         variants={item}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         onClick={() => onCategoryChange('')}
-        className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all
-          ${!selectedCategory 
-            ? 'bg-foreground text-background shadow-lg' 
-            : 'bg-background/50 text-foreground hover:bg-background/80 hover:shadow'
-          }`}
+        className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+          !selectedCategory 
+            ? 'bg-black text-white' 
+            : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+        }`}
       >
         Todos
       </motion.button>
@@ -53,14 +53,14 @@ export function CategoryFilter({
         <motion.button
           key={category.id}
           variants={item}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={() => onCategoryChange(category.id)}
-          className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all
-            ${selectedCategory === category.id
-              ? 'bg-foreground text-background shadow-lg'
-              : 'bg-background/50 text-foreground hover:bg-background/80 hover:shadow'
-            }`}
+          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            selectedCategory === category.id
+              ? 'bg-black text-white'
+              : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+          }`}
         >
           {category.name}
         </motion.button>
