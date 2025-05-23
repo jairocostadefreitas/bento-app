@@ -23,7 +23,7 @@ Uma aplicação web moderna construída com Next.js, TypeScript e TailwindCSS, a
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Next.js 14** (App Router)
+- **Next.js 15.3.2** (App Router)
 - **TypeScript**
 - **TailwindCSS**
 - **Framer Motion** - Para animações
