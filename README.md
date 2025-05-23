@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bento Grid - Aplicação de Saúde e Bem-estar
 
-## Getting Started
+Uma aplicação web moderna construída com Next.js, TypeScript e TailwindCSS, apresentando um layout inspirado no estilo Bento Grid para exibir conteúdo relacionado à saúde e bem-estar.
 
-First, run the development server:
+## 🚀 Funcionalidades
 
+- **Layout Bento Grid Responsivo**
+  - Cards de diferentes tamanhos e layouts
+  - Adaptação automática para dispositivos móveis
+  - Animações suaves na interação
+  - Gradientes e efeitos visuais modernos
+
+- **Sistema de Categorias**
+  - Filtro dinâmico por categorias
+  - Categorias: Fitness, Saúde e Bem-estar
+  - Animações suaves na transição entre categorias
+
+- **Cards Interativos**
+  - Layout adaptativo baseado no conteúdo
+  - Imagens com efeito de zoom no hover
+  - Botões com feedback visual
+  - Card de inscrição sempre visível
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Next.js 14** (App Router)
+- **TypeScript**
+- **TailwindCSS**
+- **Framer Motion** - Para animações
+- **clsx/tailwind-merge** - Para gerenciamento de classes
+
+## 📦 Pré-requisitos
+
+- Node.js 18.0.0 ou superior
+- npm ou yarn
+
+## 🚀 Como Executar
+
+1. Clone o repositório:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone [url-do-repositorio]
+cd bento-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instale as dependências:
+```bash
+npm install
+# ou
+yarn install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Execute o servidor de desenvolvimento:
+```bash
+npm run dev
+# ou
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
-## Learn More
+## 📱 Layout Responsivo
 
-To learn more about Next.js, take a look at the following resources:
+O projeto possui diferentes layouts baseados no tamanho da tela:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Desktop
+- Grid de 12 colunas
+- Cards com tamanhos variados:
+  - Card principal: 8 colunas
+  - Card secundário: 4 colunas
+  - Card terciário: 6 colunas
+  - Cards menores: 3 colunas
+- Layout horizontal para cards principais
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Mobile
+- Grid de 2 colunas
+- Layout vertical para todos os cards
+- Imagens posicionadas acima do conteúdo
+- Espaçamento otimizado para telas menores
 
-## Deploy on Vercel
+## 🎨 Personalização
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+O projeto utiliza TailwindCSS para estilização, permitindo fácil personalização através do arquivo `tailwind.config.ts`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Cores Principais
+- Rosa: `#E6007E`
+- Verde: `#5CB85C`
+- Verde-água: `#00BFA5`
+- Azul escuro: `#1E4C9A`
+- Azul claro: `#03A9F4`
+
+## 📄 Estrutura do Projeto
+
+```
+bento-app/
+├── app/
+│   ├── components/
+│   │   ├── bento-grid/
+│   │   │   ├── BentoGrid.tsx
+│   │   │   └── BentoItem.tsx
+│   │   └── CategoryFilter.tsx
+│   ├── types/
+│   │   └── index.ts
+│   ├── page.tsx
+│   └── layout.tsx
+├── public/
+│   └── imagens/
+└── package.json
+```
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
