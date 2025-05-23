@@ -1,5 +1,5 @@
-import { type BentoGridProps, type BentoItem } from '@/app/types';
-import { BentoCard } from './bento-card';
+import { type BentoGridProps } from '@/app/types';
+import { BentoItem } from './BentoItem';
 
 export function BentoGrid({ items, selectedCategory }: BentoGridProps) {
   const filteredItems = selectedCategory
@@ -7,9 +7,9 @@ export function BentoGrid({ items, selectedCategory }: BentoGridProps) {
     : items;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
       {filteredItems.map((item) => (
-        <BentoCard
+        <BentoItem
           key={item.id}
           item={item}
           className={item.featured ? 'md:col-span-2 md:row-span-2' : ''}
