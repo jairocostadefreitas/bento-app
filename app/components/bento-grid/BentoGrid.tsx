@@ -117,6 +117,20 @@ export function BentoGrid({
     });
   }, [processedCards, autoLayout]);
 
+  // MELHORIA: Função para calcular min-height dinâmico baseado no row
+  const getMinHeightClasses = (rowSpan: number) => {
+    switch (rowSpan) {
+      case 1:
+        return 'min-h-[180px] md:min-h-[220px]';
+      case 2:
+        return 'min-h-[280px] md:min-h-[320px]';
+      case 3:
+        return 'min-h-[380px] md:min-h-[420px]';
+      default:
+        return 'min-h-[200px] md:min-h-[250px]';
+    }
+  };
+
   // Classes de gap
   const gapClasses = {
     small: 'gap-2 md:gap-3',
@@ -147,6 +161,9 @@ export function BentoGrid({
           {cardsWithLayout.map((item, index) => {
             // Usar as classes Tailwind diretamente do padrão
             const spanClass = item.tailwindClasses || 'col-span-1 md:col-span-6 md:row-span-1';
+            
+            // MELHORIA: Min-height dinâmico baseado no rowSpan
+            const minHeightClass = getMinHeightClasses(item.rowSpan || 1);
 
             // Configuração de animação baseada no tipo
             const animConfig = animationConfig[item.animationType || 'scale'];
@@ -163,7 +180,7 @@ export function BentoGrid({
                   ease: "easeOut",
                   delay: index * animationDelay,
                 }}
-                className={`${spanClass} h-full min-h-[200px] md:min-h-[250px]`}
+                className={`${spanClass} h-full ${minHeightClass}`}
               >
                 <BentoItemComponent
                   item={item}

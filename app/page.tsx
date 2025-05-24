@@ -190,9 +190,9 @@ export default function Home() {
     if (!searchQuery) return items;
     
     return items.filter(item => 
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      item.tags?.some(tag => tag?.toLowerCase().includes(searchQuery.toLowerCase())) ||
       item.author?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [searchQuery]);
@@ -220,7 +220,7 @@ export default function Home() {
             Descubra conteúdos exclusivos sobre fitness, saúde e bem-estar para transformar sua vida
           </p>
         </div>
-
+       
         {/* Controles */}
         <div className="mb-8 space-y-4">
           {/* Barra de busca */}
@@ -250,7 +250,11 @@ export default function Home() {
             </p>
           </div>
         )}
-
+ <div className="mb-8 text-center border-2 border-gray-300 rounded-lg p-4 min-h-96">
+          <h1 className="mb-4 text-4xl md:text-5xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          artigos, dicas e notícias sobre saúde e bem-estar
+          </h1>
+       
         {/* Grid de conteúdo */}
         <BentoGrid
           items={filteredItems}
@@ -264,10 +268,10 @@ export default function Home() {
           sortBy="priority"
           sortOrder="asc"
         />
-
+ </div>
         {/* Rodapé */}
         <footer className="mt-16 text-center text-sm text-gray-500">
-          <p>© 2024 Saúde e Bem-estar. Todos os direitos reservados.</p>
+          <p>© 2025 Saúde e Bem-estar. Todos os direitos reservados.</p>
         </footer>
       </div>
     </main>

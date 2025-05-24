@@ -75,8 +75,27 @@ export type BentoItem = {
   readTime?: string;
   tailwindClasses?: string;
   
-  // REMOVIDO: Propriedades que agora vêm do autoLayoutPatterns
-  // backgroundColor, textColor, buttonText, position, imageSize, titleSize, etc.
+  // Propriedades visuais aplicadas pelo autoLayoutPatterns
+  backgroundColor?: string;
+  textColor?: string;
+  gradient?: string;
+  borderColor?: string;
+  borderWidth?: number;
+  imageSize?: ImageSize;
+  position?: ImagePosition;
+  titleSize?: TitleSize;
+  descriptionSize?: DescriptionSize;
+  buttonText?: string;
+  buttonVariant?: ButtonVariant;
+  buttonColor?: string;
+  hoverEffect?: "scale" | "lift" | "glow" | "rotate" | "none";
+  shadow?: "none" | "sm" | "md" | "lg" | "xl" | "2xl";
+  rounded?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
+  icon?: string;
+  badge?: string;
+  badgeColor?: string;
+  priority?: number;
+  featured?: boolean;
 };
 
 export type BentoGridProps = {
@@ -116,10 +135,12 @@ export const autoLayoutPatterns: AutoLayoutPattern[] = [
   {
     col: 12, 
     row: 12,
+    
+    rounded: 'full',
     backgroundColor: 'silver', 
     textColor: 'black',
     position: "left", 
-    titleSize: "3xl", 
+    titleSize: "2xl", 
     imageSize: "large", 
     hoverEffect: 'glow',
     shadow: '2xl', 
@@ -129,7 +150,7 @@ export const autoLayoutPatterns: AutoLayoutPattern[] = [
     badgeColor: '#00FF88', 
     priority: 1,
     featured: true,
-    tailwindClasses: "col-span-2 md:col-span-7 md:row-span-1" 
+    tailwindClasses: "col-span-2 md:col-span-6 md:row-span-1" 
   },
   
   // Card 2: Equilíbrio e Saúde
@@ -138,7 +159,8 @@ export const autoLayoutPatterns: AutoLayoutPattern[] = [
     row: 12,
     backgroundColor: '#5CB85C',
     textColor: 'white',
-    imageSize: "large",
+    rounded: 'full',
+    imageSize: "small",
     titleSize: "xl",
     position: "top",
     buttonText: '+ Saiba mais',
@@ -147,15 +169,16 @@ export const autoLayoutPatterns: AutoLayoutPattern[] = [
     shadow: 'lg',
     priority: 2,
     icon: '⚖️',
+    borderWidth: 1,
     tailwindClasses: "col-span-2 md:col-span-5 md:row-span-2"
   },
   
   // Card 3: Bem-estar Feminino - TESTE: Alterando para demonstrar row-span funcionando
   {
     col: 12,
-    row: 12, // ✏️ TESTE: 2 linhas de altura
-    backgroundColor: 'pink',
-    textColor: 'black',
+    row: 12, 
+    backgroundColor: 'black',
+    textColor: 'white',
     imageSize: "large",
     titleSize: "lg",
     position: "bottom",
@@ -165,15 +188,15 @@ export const autoLayoutPatterns: AutoLayoutPattern[] = [
     shadow: 'lg',
     priority: 3,
     icon: '🌸',
-    badge: 'TESTE ROW-SPAN', // ✏️ TESTE: Badge indicando o teste
+    badge: 'TESTE ROW-SPAN', 
     badgeColor: '#4ECDC4',
-    tailwindClasses: "col-span-2 md:col-span-7 md:row-span-1" // ✏️ TESTE: 2 linhas no desktop
+    tailwindClasses: "col-span-2 md:col-span-7 md:row-span-1"
   },
   
   // Card 4: Saúde Integral - TESTE: 1 linha para contrastar
   {
     col: 12,
-    row: 12, // ✏️ TESTE: Apenas 1 linha de altura
+    row: 12, 
     backgroundColor: '#1E4C9A',
     textColor: 'white',
     imageSize: "small",
@@ -185,9 +208,9 @@ export const autoLayoutPatterns: AutoLayoutPattern[] = [
     shadow: 'md',
     priority: 4,
     icon: '🏃',
-    badge: 'TESTE 1 LINHA', // ✏️ TESTE: Badge indicando 1 linha
+    badge: 'TESTE 1 LINHA', // 
     badgeColor: '#3B82F6',
-    tailwindClasses: "col-span-2 md:col-span-4 md:row-span-1" // ✏️ TESTE: 1 linha no desktop
+    tailwindClasses: "col-span-2 md:col-span-4 md:row-span-1" 
   },
   
   // Card 5: Fitness Feminino
